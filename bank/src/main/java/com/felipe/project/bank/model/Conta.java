@@ -1,11 +1,13 @@
 package com.felipe.project.bank.model;
 
+import com.felipe.project.bank.enums.TipoContaEnum;
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
-@MappedSuperclass
-public abstract class Conta {
-
+@Entity
+@Table(name = "conta_bancaria")
+public class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -13,22 +15,29 @@ public abstract class Conta {
     private String agencia;
     @Column(name = "titular")
     private String titular;
+    @Column(name = "tipo_conta")
+    private TipoContaEnum tipoContaEnum;
     @Column(name = "saldo")
-    private BigDecimal saldo;
+    private double saldo;
 
-    public Conta(String agencia, String titular) {
+    public Conta(String agencia, String titular, TipoContaEnum tipoContaEnum) {
         this.agencia = agencia;
         this.titular = titular;
-        this.saldo = BigDecimal.ZERO;
+        this.tipoContaEnum = tipoContaEnum;
+        this.saldo = 0;
     }
 
-    public Conta(){
-        this.saldo = BigDecimal.ZERO;
+    public Conta() {
     }
 
     public Long getId() {
         return id;
     }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getAgencia() {
         return agencia;
     }
@@ -37,13 +46,27 @@ public abstract class Conta {
         this.agencia = agencia;
     }
 
-    public BigDecimal getSaldo() {
-        return saldo;
-    }
     public String getTitular() {
         return titular;
     }
+
     public void setTitular(String titular) {
         this.titular = titular;
+    }
+
+    public TipoContaEnum getTipoContaEnum() {
+        return tipoContaEnum;
+    }
+
+    public void setTipoContaEnum(TipoContaEnum tipoContaEnum) {
+        this.tipoContaEnum = tipoContaEnum;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
     }
 }
