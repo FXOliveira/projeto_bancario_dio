@@ -1,13 +1,10 @@
 package com.felipe.project.bank.model;
 
-import com.felipe.project.bank.enums.TipoContaEnum;
+import com.felipe.project.bank.enums.TipoContaBancariaEnum;
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
-
-@Entity
-@Table(name = "conta_bancaria")
-public class Conta {
+@MappedSuperclass
+public abstract class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,11 +13,11 @@ public class Conta {
     @Column(name = "titular")
     private String titular;
     @Column(name = "tipo_conta")
-    private TipoContaEnum tipoContaEnum;
+    private TipoContaBancariaEnum tipoContaEnum;
     @Column(name = "saldo")
     private double saldo;
 
-    public Conta(String agencia, String titular, TipoContaEnum tipoContaEnum) {
+    public Conta(String agencia, String titular, TipoContaBancariaEnum tipoContaEnum) {
         this.agencia = agencia;
         this.titular = titular;
         this.tipoContaEnum = tipoContaEnum;
@@ -54,11 +51,11 @@ public class Conta {
         this.titular = titular;
     }
 
-    public TipoContaEnum getTipoContaEnum() {
+    public TipoContaBancariaEnum getTipoContaEnum() {
         return tipoContaEnum;
     }
 
-    public void setTipoContaEnum(TipoContaEnum tipoContaEnum) {
+    public void setTipoContaEnum(TipoContaBancariaEnum tipoContaEnum) {
         this.tipoContaEnum = tipoContaEnum;
     }
 
