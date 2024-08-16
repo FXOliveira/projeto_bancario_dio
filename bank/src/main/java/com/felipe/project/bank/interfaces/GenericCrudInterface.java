@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface GenericCrudInterface<T> {
-    T save(T obj);
+    void save(T obj);
 
-    Optional<T> findById(long id);
+    T findById(Long id);
 
     List<T> findAll();
 
-    void delete(long id);
+    void delete(Long id);
 
-    T update(T obj);
 }
