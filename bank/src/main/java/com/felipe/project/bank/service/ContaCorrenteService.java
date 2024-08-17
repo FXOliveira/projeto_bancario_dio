@@ -4,6 +4,7 @@ import com.felipe.project.bank.interfaces.GenericCrudInterface;
 import com.felipe.project.bank.model.ContaCorrente;
 import com.felipe.project.bank.repository.ContaCorrenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +33,16 @@ public class ContaCorrenteService implements GenericCrudInterface<ContaCorrente>
         contaCorrenteRepository.deleteById(id);
     }
 
-    public void depositar(){
-        System.out.println("Realizando deposito na conta corrente");
+    public ResponseEntity<String> depositar()
+    {
+        return ResponseEntity.ok("DEPOSITO CONTA CORRENTE");
+    }
+
+    public ResponseEntity<String> sacar(){
+        return ResponseEntity.ok("SAQUE CONTA CORRENTE");
+    }
+    public ResponseEntity<String> transferir(){
+        return ResponseEntity.ok("TRANSFERÊNCIA CONTA CORRENTE");
     }
 
 }
