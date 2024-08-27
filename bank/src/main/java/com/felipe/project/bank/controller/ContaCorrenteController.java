@@ -1,5 +1,6 @@
 package com.felipe.project.bank.controller;
 
+import com.felipe.project.bank.exceptions.ErroOperacaoBancariaException;
 import com.felipe.project.bank.model.ContaCorrente;
 import com.felipe.project.bank.service.ContaCorrenteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,18 +30,12 @@ public class ContaCorrenteController {
         contaCorrenteService.delete(id);
     }
 
-    // MÉTODOS A SEREM AINDA IMPLEMENTADOS
-    @GetMapping("/deposito")
-    public void depositar(){
-        contaCorrenteService.depositar();
+    @GetMapping("/deposito/{id}")
+    public void depositar(@PathVariable("id") Long id, @RequestBody double valor) throws ErroOperacaoBancariaException {
+        contaCorrenteService.depositar(id, valor);
     }
-    @GetMapping("/transferencia")
-    public void transferir(){
-        contaCorrenteService.transferir();
+    @GetMapping("/saque/{id}")
+    public void sacar(@PathVariable("id") Long id, @RequestBody double valor){
+        contaCorrenteService.sacar(id, valor);
     }
-    @GetMapping("/saque")
-    public void sacar(){
-        contaCorrenteService.sacar();
-    }
-
 }

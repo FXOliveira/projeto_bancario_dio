@@ -1,6 +1,8 @@
 package com.felipe.project.bank.service;
 
+import com.felipe.project.bank.exceptions.ErroOperacaoBancariaException;
 import com.felipe.project.bank.interfaces.GenericCrudInterface;
+import com.felipe.project.bank.interfaces.OperacoesBancariasInterface;
 import com.felipe.project.bank.model.ContaCorrente;
 import com.felipe.project.bank.repository.ContaCorrenteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ContaCorrenteService implements GenericCrudInterface<ContaCorrente> {
+public class ContaCorrenteService implements GenericCrudInterface<ContaCorrente>,
+        OperacoesBancariasInterface<ContaCorrente> {
     @Autowired
     private ContaCorrenteRepository contaCorrenteRepository;
     @Override
@@ -32,19 +35,28 @@ public class ContaCorrenteService implements GenericCrudInterface<ContaCorrente>
     public void delete(Long id) {
         contaCorrenteRepository.deleteById(id);
     }
+    @Override
+    public ResponseEntity<Void> depositar(Long id, double valor) throws ErroOperacaoBancariaException {
+        ContaCorrente contaCorrente = contaCorrenteRepository.findById(id).orElseThrow(() ->
+                new ErroOperacaoBancariaException("Conta não encontrada!!"));
 
-    public ResponseEntity<String> depositar()
-    {
-        return ResponseEntity.ok("DEPOSITO CONTA CORRENTE");
-    }
+        if(valor <= 0){
+            throw new ErroOperacaoBancariaException("Valor de depósito inválido!!");
+        }
 
-    public ResponseEntity<String> sacar(){
-        return ResponseEntity.ok("SAQUE CONTA CORRENTE");
-    }
-    public ResponseEntity<String> transferir(){
-        return ResponseEntity.ok("TRANSFERÊNCIA CONTA CORRENTE");
-    }
+        double novoValor = contaCorrente.getSaldo() + valor;
 
+        contaCorrente.setSaldo(novoValor);
+
+        contaCorrenteRepository.save(contaCorrente);
+
+        return ResponseEntity.noContent().build();
+
+    }
+    @Override
+    public ResponseEntity<Void> sacar(Long id, double valor) {
+        return null;
+    }
 }
 
 
