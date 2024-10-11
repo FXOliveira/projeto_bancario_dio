@@ -53,10 +53,26 @@ public class ContaCorrenteService implements GenericCrudInterface<ContaCorrente>
         return ResponseEntity.noContent().build();
 
     }
+    
     @Override
-    public ResponseEntity<Void> sacar(Long id, double valor) {
-        return null;
+    public ResponseEntity<Void> sacar(Long id, double valor) throws ErroOperacaoBancariaException {
+        ContaCorrente contaCorrente = contaCorrenteRepository.findById(id).orElseThrow(() ->
+                new ErroOperacaoBancariaException("Conta não encontrada!!"));
+
+        if(valor > contaCorrente.getSaldo() || valor <= 0){
+            throw new ErroOperacaoBancariaException("Valor de saque inválido!!");
+        }
+
+        double novoValor = contaCorrente.getSaldo() - valor;
+
+        contaCorrente.setSaldo(novoValor);
+
+        contaCorrenteRepository.save(contaCorrente);
+
+        return ResponseEntity.noContent().build();
+
     }
+
 }
 
 
