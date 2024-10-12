@@ -48,15 +48,13 @@ public class ContaCorrenteController {
         }
     }
 
-    @PutMapping("/saque/{id}")
+   @PutMapping("/saque/{id}")
     public ResponseEntity sacar(@PathVariable("id") Long id, @RequestParam double valor) throws ErroOperacaoBancariaException {
         try {
             contaCorrenteService.sacar(id, valor);
-            return ResponseEntity.ok("Saque realizado com sucesso!");
+            return ResponseEntity.ok(MessageResponse.getMessageResponse("Saque realizado com sucesso!"));
         } catch (ErroOperacaoBancariaException ex) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("message", ex.getMessage());
-            return ResponseEntity.badRequest().body(errorResponse);
+            return ResponseEntity.badRequest().body(MessageResponse.getMessageResponse(ex.getMessage()));
         }
     }
 }
