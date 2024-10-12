@@ -6,6 +6,6 @@ import org.springframework.http.ResponseEntity;
 public interface OperacoesBancariasInterface<T> {
 
     public ResponseEntity<Void> depositar(Long id, double valor) throws ErroOperacaoBancariaException;
-    public ResponseEntity<Void> sacar(Long id, double valor);
+    public ResponseEntity<Void> sacar(Long id, double valor) throws ErroOperacaoBancariaException
 
 }
