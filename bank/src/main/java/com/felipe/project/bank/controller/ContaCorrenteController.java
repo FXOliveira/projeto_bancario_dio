@@ -4,9 +4,12 @@ import com.felipe.project.bank.exceptions.ErroOperacaoBancariaException;
 import com.felipe.project.bank.model.ContaCorrente;
 import com.felipe.project.bank.service.ContaCorrenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/contacorrente")
@@ -29,13 +32,19 @@ public class ContaCorrenteController {
     public void deleteContaCorrenteById(@PathVariable("id") Long id){
         contaCorrenteService.delete(id);
     }
-
-    @GetMapping("/deposito/{id}")
-    public void depositar(@PathVariable("id") Long id, @RequestBody double valor) throws ErroOperacaoBancariaException {
-        contaCorrenteService.depositar(id, valor);
+    @PutMapping("/deposito/{id}")
+    public ResponseEntity depositar(@PathVariable("id") Long id, @RequestParam double valor) throws ErroOperacaoBancariaException {
+        try{
+            contaCorrenteService.depositar(id, valor);
+            return ResponseEntity.ok("Depósito realizado com sucesso!");
+        }catch(ErroOperacaoBancariaException ex){
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", ex.getMessage());
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
     }
-    @GetMapping("/saque/{id}")
-    public void sacar(@PathVariable("id") Long id, @RequestBody double valor){
+    @PutMapping("/saque/{id}")
+    public void sacar(@PathVariable("id") Long id, @RequestParam double valor) throws ErroOperacaoBancariaException {
         contaCorrenteService.sacar(id, valor);
     }
 }
